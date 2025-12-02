@@ -25,7 +25,6 @@ class KL_Palvelut {
         add_action('save_post_' . self::POST_TYPE, [$this, 'save_meta'], 10, 2);
         add_filter('manage_' . self::POST_TYPE . '_posts_columns', [$this, 'cols']);
         add_action('manage_' . self::POST_TYPE . '_posts_custom_column', [$this, 'col_content'], 10, 2);
-        add_action('pre_get_posts', [$this, 'limit_archive_to_three']);
         add_shortcode('palvelut_home', [$this, 'shortcode_home']);
     }
 
@@ -87,9 +86,9 @@ class KL_Palvelut {
           <div class="kl-field">
             <h4><?php _e('Hinta','koiranloma'); ?></h4>
             <input type="text" name="kl_price" value="<?php echo esc_attr($price); ?>" style="width:100%;">
-            <h4 style="margin-top:12px;"><?php _e('Bullets (3)','koiranloma'); ?></h4>
+            <h4 style="margin-top:12px; "><?php _e('Bullets (3)','koiranloma'); ?></h4>
             <?php for($i=0;$i<3;$i++): ?>
-              <input type="text" name="kl_bullets[]" value="<?php echo esc_attr($bullets[$i]); ?>" style="width:100%;">
+              <input type="text" name="kl_bullets[]" value="<?php echo esc_attr($bullets[$i]); ?>" style="width:100%; ">
             <?php endfor; ?>
             <h4 style="margin-top:12px;"><?php _e('Etusivu','koiranloma'); ?></h4>
             <label><input type="checkbox" name="kl_show_on_home" value="1" <?php checked($show,'1'); ?>> <?php _e('Näytä etusivulla','koiranloma'); ?></label>
@@ -135,14 +134,6 @@ class KL_Palvelut {
         }
         if($col==='price') echo esc_html(get_post_meta($id,self::META_PRICE,true));
         if($col==='home')  echo get_post_meta($id,self::META_HOME,true)?'✓':'—';
-    }
-
-    public function limit_archive_to_three($q){
-        if(is_admin()||!$q->is_main_query())return;
-        if($q->is_post_type_archive(self::POST_TYPE)){
-            $q->set('posts_per_page',3);
-            $q->set('orderby',['menu_order'=>'ASC','date'=>'DESC']);
-        }
     }
 
     private function whatsapp_link(){
@@ -198,7 +189,7 @@ class KL_Palvelut {
 
             <div class="service-foot">
               <?php if($price): ?>
-                <div class="price-value"><?php echo esc_html($price); ?></div>
+                <div class="price-value" ><?php echo esc_html($price); ?></div>
               <?php endif; ?>
               <a class="btn-cta" href="<?php echo esc_url($cta_url); ?>" target="_blank" rel="noopener">
                 <?php echo esc_html($cta_txt); ?>
